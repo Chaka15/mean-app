@@ -1,4 +1,5 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Post } from 'src/app/models/post.interface';
 
 @Component({
@@ -6,18 +7,33 @@ import { Post } from 'src/app/models/post.interface';
   templateUrl: './post-create.component.html',
   styleUrls: ['./post-create.component.scss'],
 })
-export class PostCreateComponent {
+export class PostCreateComponent implements OnInit {
   @Output() createPost = new EventEmitter<Post>();
 
-  enteredTitle = '';
-  enteredContent = '';
+  form!: FormGroup;
 
-  onAddPost() {
+  constructor(private formBuilder: FormBuilder) {}
+
+  ngOnInit(): void {
+    this.initializeForm();
+  }
+
+  public onAddPost(): void {
+    if (this.form.invalid) {
+      return;
+    }
+
     const post: Post = {
-      title: this.enteredTitle,
-      content: this.enteredContent,
+      title: this.form.value.title,
+      content: this.form.value.content,
     };
-
     this.createPost.emit(post);
+  }
+
+  private initializeForm(): void {
+    this.form = this.formBuilder.group({
+      title: ['', [Validators.required, Validators.minLength(3)]],
+      content: ['', Validators.required],
+    });
   }
 }
