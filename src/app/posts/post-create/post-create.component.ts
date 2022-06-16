@@ -1,6 +1,7 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Post } from 'src/app/models/post.interface';
+import { Post } from 'src/app/posts/post.interface';
+import { PostsService } from '../posts.service';
 
 @Component({
   selector: 'app-post-create',
@@ -8,11 +9,12 @@ import { Post } from 'src/app/models/post.interface';
   styleUrls: ['./post-create.component.scss'],
 })
 export class PostCreateComponent implements OnInit {
-  @Output() createPost = new EventEmitter<Post>();
-
   form!: FormGroup;
 
-  constructor(private formBuilder: FormBuilder) {}
+  constructor(
+    private formBuilder: FormBuilder,
+    private postsService: PostsService
+  ) {}
 
   ngOnInit(): void {
     this.initializeForm();
@@ -27,7 +29,7 @@ export class PostCreateComponent implements OnInit {
       title: this.form.value.title,
       content: this.form.value.content,
     };
-    this.createPost.emit(post);
+    this.postsService.addPost(post);
   }
 
   private initializeForm(): void {
