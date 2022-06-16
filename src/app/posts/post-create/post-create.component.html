@@ -1,11 +1,11 @@
 <mat-card>
   <form [formGroup]="form" (ngSubmit)="onAddPost()">
     <mat-form-field>
-      <input matInput type="text" formControlName="title">
+      <input matInput type="text" placeholder="Post Title" formControlName="title">
       <mat-error *ngIf="form.get('title')?.invalid">Please enter a valid title!</mat-error>
     </mat-form-field>
     <mat-form-field>
-      <textarea matInput rows="6" formControlName="content"></textarea>
+      <textarea matInput rows="6" placeholder="Post Content" formControlName="content"></textarea>
       <mat-error *ngIf="form.get('content')?.invalid">Please enter a valid content!</mat-error>
     </mat-form-field>
     <button type="submit" color="accent" mat-raised-button [disabled]="form.invalid">
