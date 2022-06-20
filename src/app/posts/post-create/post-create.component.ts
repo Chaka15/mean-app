@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+
 import { Post } from 'src/app/posts/post.interface';
 import { PostsService } from '../posts.service';
 
@@ -26,6 +27,7 @@ export class PostCreateComponent implements OnInit {
     }
 
     const post: Post = {
+      id: '',
       title: this.form.value.title,
       content: this.form.value.content,
     };
