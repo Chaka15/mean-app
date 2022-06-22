@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import { Post } from 'src/app/posts/post.interface';
+import { PostForm } from '../post-form.interface';
 import { PostsService } from '../posts.service';
 
 @Component({
@@ -10,7 +11,7 @@ import { PostsService } from '../posts.service';
   styleUrls: ['./post-create.component.scss'],
 })
 export class PostCreateComponent implements OnInit {
-  form!: FormGroup;
+  form!: FormGroup<PostForm>;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -28,15 +29,15 @@ export class PostCreateComponent implements OnInit {
 
     const post: Post = {
       id: '',
-      title: this.form.value.title,
-      content: this.form.value.content,
+      title: this.form.value.title ?? '',
+      content: this.form.value.content ?? '',
     };
     this.postsService.addPost(post);
     this.form.reset();
   }
 
   private initializeForm(): void {
-    this.form = this.formBuilder.group({
+    this.form = this.formBuilder.nonNullable.group({
       title: ['', [Validators.required, Validators.minLength(3)]],
       content: ['', Validators.required],
     });
