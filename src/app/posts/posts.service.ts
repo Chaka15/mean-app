@@ -40,10 +40,14 @@ export class PostsService {
   }
 
   addPost(post: Post) {
-    this.http.post<{ message: string }>(this.baseUrl, post).subscribe(() => {
-      this.posts.push(post);
-      this.postsUpdated.next([...this.posts]);
-    });
+    this.http
+      .post<{ message: string; postId: string }>(this.baseUrl, post)
+      .subscribe((responseData) => {
+        const postId = responseData.postId;
+        post.id = postId;
+        this.posts.push(post);
+        this.postsUpdated.next([...this.posts]);
+      });
   }
 
   deletePost(postId: string) {
