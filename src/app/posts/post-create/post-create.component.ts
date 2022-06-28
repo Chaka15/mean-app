@@ -34,6 +34,7 @@ export class PostCreateComponent implements OnInit {
             title: postData.title,
             content: postData.content,
           };
+          this.initializeForm();
         });
       } else {
         this.mode = 'create';
@@ -62,7 +63,6 @@ export class PostCreateComponent implements OnInit {
     }
     if (this.mode === 'edit') {
       this.postsService.updatePost(this.postId, post);
-      this.form.reset();
       return;
     }
   }
