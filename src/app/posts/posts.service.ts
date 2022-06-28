@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
-import { map, Subject } from 'rxjs';
+import { map, Observable, Subject, Subscription } from 'rxjs';
 import { Post } from './post.interface';
 
 @Injectable({
@@ -15,7 +15,7 @@ export class PostsService {
 
   constructor(private http: HttpClient) {}
 
-  getPosts() {
+  getPosts(): Subscription {
     return this.http
       .get<{ message: string; posts: any }>(this.baseUrl)
       .pipe(
@@ -35,17 +35,19 @@ export class PostsService {
       });
   }
 
-  getPostUpdateListener() {
+  getPostUpdateListener(): Subject<Post[]> {
     return this.postsUpdated;
   }
 
-  getPost(id: string) {
+  getPost(
+    id: string
+  ): Observable<{ _id: string; title: string; content: string }> {
     return this.http.get<{ _id: string; title: string; content: string }>(
       `${this.baseUrl}/${id}`
     );
   }
 
-  addPost(post: Post) {
+  addPost(post: Post): void {
     this.http
       .post<{ message: string; postId: string }>(this.baseUrl, post)
       .subscribe((responseData) => {
@@ -71,7 +73,7 @@ export class PostsService {
     });
   }
 
-  deletePost(postId: string) {
+  deletePost(postId: string): void {
     this.http.delete(`${this.baseUrl}/${postId}`).subscribe(() => {
       const updatedPosts = this.posts.filter((post) => post.id !== postId);
       this.posts = updatedPosts;
