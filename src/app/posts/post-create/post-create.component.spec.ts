@@ -6,6 +6,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
+import { AppRoutingModule } from 'src/app/app-routing.module';
 import { PostCreateComponent } from './post-create.component';
 
 describe('PostCreateComponent', () => {
@@ -17,6 +18,7 @@ describe('PostCreateComponent', () => {
       declarations: [PostCreateComponent],
       providers: [FormBuilder, HttpClient, HttpHandler],
       imports: [
+        AppRoutingModule,
         BrowserAnimationsModule,
         MatCardModule,
         MatFormFieldModule,
