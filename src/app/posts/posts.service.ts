@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
 
 import { map, Observable, Subject, Subscription } from 'rxjs';
 import { Post } from './post.interface';
@@ -13,7 +14,7 @@ export class PostsService {
 
   private readonly baseUrl = 'http://localhost:3000/api/posts';
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private router: Router) {}
 
   getPosts(): Subscription {
     return this.http
@@ -55,6 +56,7 @@ export class PostsService {
         post.id = postId;
         this.posts.push(post);
         this.postsUpdated.next([...this.posts]);
+        this.router.navigate(['/']);
       });
   }
 
@@ -70,6 +72,7 @@ export class PostsService {
       updatedPosts[oldPostIndex] = post;
       this.posts = updatedPosts;
       this.postsUpdated.next([...this.posts]);
+      this.router.navigate(['/']);
     });
   }
 
