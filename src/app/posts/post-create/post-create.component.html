@@ -1,5 +1,5 @@
 <mat-card>
-  <form [formGroup]="form" (ngSubmit)="onAddPost()">
+  <form [formGroup]="form" (ngSubmit)="onSavePost()">
     <mat-form-field>
       <input matInput type="text" placeholder="Post Title" formControlName="title">
       <mat-error *ngIf="form.get('title')?.invalid">Please enter a valid title!</mat-error>

@@ -39,6 +39,12 @@ export class PostsService {
     return this.postsUpdated;
   }
 
+  getPost(id: string): Post {
+    return {
+      ...this.posts.find((post) => post.id === id)!,
+    };
+  }
+
   addPost(post: Post) {
     this.http
       .post<{ message: string; postId: string }>(this.baseUrl, post)
@@ -48,6 +54,15 @@ export class PostsService {
         this.posts.push(post);
         this.postsUpdated.next([...this.posts]);
       });
+  }
+
+  updatePost(postId: string, postData: Post): void {
+    const post: Post = {
+      ...postData,
+      id: postId,
+    };
+
+    this.http.put(`${this.baseUrl}/${postId}`, post).subscribe();
   }
 
   deletePost(postId: string) {
