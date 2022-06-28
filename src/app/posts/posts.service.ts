@@ -39,10 +39,10 @@ export class PostsService {
     return this.postsUpdated;
   }
 
-  getPost(id: string): Post {
-    return {
-      ...this.posts.find((post) => post.id === id)!,
-    };
+  getPost(id: string) {
+    return this.http.get<{ _id: string; title: string; content: string }>(
+      `${this.baseUrl}/${id}`
+    );
   }
 
   addPost(post: Post) {
@@ -62,7 +62,13 @@ export class PostsService {
       id: postId,
     };
 
-    this.http.put(`${this.baseUrl}/${postId}`, post).subscribe();
+    this.http.put(`${this.baseUrl}/${postId}`, post).subscribe(() => {
+      const updatedPosts = [...this.posts];
+      const oldPostIndex = updatedPosts.findIndex((p) => p.id === postId);
+      updatedPosts[oldPostIndex] = post;
+      this.posts = updatedPosts;
+      this.postsUpdated.next([...this.posts]);
+    });
   }
 
   deletePost(postId: string) {
