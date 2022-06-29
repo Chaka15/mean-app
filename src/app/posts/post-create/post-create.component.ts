@@ -12,8 +12,10 @@ import { PostsService } from '../posts.service';
   styleUrls: ['./post-create.component.scss'],
 })
 export class PostCreateComponent implements OnInit {
-  public form!: FormGroup<PostForm>;
   public isLoading = false;
+  public form!: FormGroup<PostForm>;
+  public imagePreview!: string;
+
   private mode = 'create';
   private postId!: string;
   private post!: Post;
@@ -75,6 +77,16 @@ export class PostCreateComponent implements OnInit {
     const file = (event.target as HTMLInputElement).files?.item(0);
     this.form.patchValue({ image: file });
     this.form.get('image')?.updateValueAndValidity();
+
+    this.loadImageReader(file!);
+  }
+
+  private loadImageReader(file: File): void {
+    const reader = new FileReader();
+    reader.onload = () => {
+      this.imagePreview = reader.result as string;
+    };
+    reader.readAsDataURL(file);
   }
 
   private initializeForm(): void {
