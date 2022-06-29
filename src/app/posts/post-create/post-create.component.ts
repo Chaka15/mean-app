@@ -71,13 +71,20 @@ export class PostCreateComponent implements OnInit {
     }
   }
 
+  public onImagePicked(event: Event): void {
+    const file = (event.target as HTMLInputElement).files?.item(0);
+    this.form.patchValue({ image: file });
+    this.form.get('image')?.updateValueAndValidity();
+  }
+
   private initializeForm(): void {
-    this.form = this.formBuilder.nonNullable.group({
+    this.form = this.formBuilder.group({
       title: [
         this.post?.title ?? '',
         [Validators.required, Validators.minLength(3)],
       ],
       content: [this.post?.content ?? '', Validators.required],
+      image: [null, Validators.required],
     });
   }
 }
